@@ -105,6 +105,11 @@ install:
 # check 32 or 64 bit
   - python -c "import struct;print(8 * struct.calcsize('P'))"
 
+test_data:
+  - git clone https://github.com/pytrip/testdata-lsf.git
+  - cd testdata-lsf
+  - dir
+
 test_script:
 # generate versioneer stuff
   - python %MINICONDAPATH%/envs/python%PYTHON_VERSION%/Scripts/versioneer install
