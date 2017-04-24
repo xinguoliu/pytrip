@@ -83,6 +83,7 @@ init:
   - python -V
 # check 32 or 64 bit
   - python -c "import struct;print(8 * struct.calcsize('P'))"
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1')
 
 install:
 # tell miniconda to always follow default answers
@@ -107,7 +108,7 @@ install:
 
 test_script:
 # get testing data from separate GIT LFS (large file storage) repository
-  - git clone https://github.com/pytrip/testdata.git
+#  - git clone https://github.com/pytrip/testdata.git
 # generate versioneer stuff
   - python %MINICONDAPATH%/envs/python%PYTHON_VERSION%/Scripts/versioneer install
 # make wheel package
@@ -122,6 +123,9 @@ test_script:
   - FOR %%I in (tests\test*.py) DO python -m pytest %%I
 # deploy package
   - bash appveyor\deploy_package.sh
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 # upload artifacts
 # disabling to save the space
