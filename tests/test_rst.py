@@ -25,7 +25,7 @@ import logging
 import tempfile
 # import shutil
 
-import tests.test_base
+import tests.base
 from pytrip.raster import Rst
 import pytrip.utils.rst2sobp
 
@@ -38,7 +38,7 @@ class TestRst(unittest.TestCase):
     def setUp(self):
         """ Prepare files for tests
         """
-        testdir = tests.test_base.get_files()
+        testdir = tests.base.get_files()
         self.rst000 = os.path.join(testdir, "tst003001.rst")
         logger.info("Testing .rst from path " + self.rst000)
 
@@ -59,7 +59,7 @@ class TestRst2Sobp(unittest.TestCase):
     def setUp(self):
         """ Prepare files for tests
         """
-        testdir = tests.test_base.get_files()
+        testdir = tests.base.get_files()
         self.rst000 = os.path.join(testdir, "tst003001.rst")
         logger.info("Testing rst2sobp.py using .rst from path " + self.rst000)
 

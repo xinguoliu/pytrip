@@ -92,7 +92,7 @@ class TestRCR(unittest.TestCase):
 
         # add hypoxia, should increase survival
         sf2 = sf_rcr(dose, let, 10.0)  # some oxygenation -> less survival
-        self.assertGreater(1.0, sf2)
+        self.assertLess(1.0, sf2)
         self.assertGreater(sf2, 0.0)
 
         sf1 = sf_rcr(dose, let, 0.0)  # no oxygenation -> much survival
