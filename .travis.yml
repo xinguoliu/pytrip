@@ -96,11 +96,13 @@ install:
 # dropping MacOSX support for Windows, to get faster builds https://github.com/pytrip/pytrip/issues/267
 #  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then travis_wait ./.travis/install_osx.sh ; fi
 
+# get testing data from separate GIT LFS (large file storage) repository
+before_script:
+  - git clone https://github.com/pytrip/testdata.git
+
 # finally run tox tests
 script:
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then travis_wait tox --notest && tox -- -n 4 ; fi
-  - git clone https://github.com/pytrip/testdata-lsf.git
-  - ls -al testdata-lsf
+  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then travis_wait tox --notest && tox -- -n 2 ; fi
 # dropping MacOSX support for Windows, to get faster builds https://github.com/pytrip/pytrip/issues/267
 #  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then travis_wait ./.travis/run_osx.sh ; fi
 # in case all previous commands in script section succeeded, run deploy (if tag is present then upload)
