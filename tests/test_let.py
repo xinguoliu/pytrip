@@ -52,7 +52,7 @@ class TestLet(unittest.TestCase):
         self.assertGreater(area, 2.0)
         self.assertEqual(len(lvh.shape), 1)
         self.assertEqual(lvh.shape[0], 3000)
-        self.assertEqual(min_l, 0.0)
+        self.assertGreater(min_l, 0.0)
         self.assertEqual(max_l, 1.0)
 
         self.assertGreater(l.get_max(), 30.0)
