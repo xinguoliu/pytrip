@@ -18,24 +18,24 @@ matrix:
           env: TOXENV=py27
 # it doesn't make sense to run normal tests for py35, as coverage will run them and upload
 # coverage includes also testing documentation generation with sphinx
-        - os: linux
-          python: 3.5
-          env: TOXENV=coverage
+#        - os: linux
+#          python: 3.5
+#          env: TOXENV=coverage
         - os: linux
           python: 3.2
           env: TOXENV=py32 VENVVER="<14.0.0" PIPVER="<8.0.0" STVER="<30.0.0"
-        - os: linux
-          python: 3.3
-          env: TOXENV=py33
-        - os: linux
-          python: 3.4
-          env: TOXENV=py34
-        - os: linux
-          python: 3.6
-          env: TOXENV=py36
-        - os: linux
-          python: nightly
-          env: TOXENV=py37
+#        - os: linux
+#          python: 3.3
+#          env: TOXENV=py33
+#        - os: linux
+#          python: 3.4
+#          env: TOXENV=py34
+#        - os: linux
+#          python: 3.6
+#          env: TOXENV=py36
+#        - os: linux
+#          python: nightly
+#          env: TOXENV=py37
     # MacOSX tests for various python versions
 # dropping MacOSX support for Windows, to get faster builds https://github.com/pytrip/pytrip/issues/267
 #        - os: osx
@@ -60,14 +60,14 @@ matrix:
     # python 3.3 is handled separately as at the time no matplotlib package is provided for py3.3
     #   and matplotlib has to be compiled from sources which takes a lot of time
     # documentation checks and PEP8 code quality checks included in packaging
-        - python: 3.5
-          env: TOXENV=packaging PRECMD=linux32 TARGET="cp27-cp27m cp27-cp27mu"
-        - python: 3.5
-          env: TOXENV=packaging PRECMD=linux32 TARGET="cp34-cp34m cp35-cp35m cp36-cp36m"
-        - python: 3.5
-          env: TOXENV=packaging TARGET="cp27-cp27m cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m"
-        - python: 3.5
-          env: TOXENV=packaging TARGET=source
+#        - python: 3.5
+#          env: TOXENV=packaging PRECMD=linux32 TARGET="cp27-cp27m cp27-cp27mu"
+#        - python: 3.5
+#          env: TOXENV=packaging PRECMD=linux32 TARGET="cp34-cp34m cp35-cp35m cp36-cp36m"
+#        - python: 3.5
+#          env: TOXENV=packaging TARGET="cp27-cp27m cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m"
+#        - python: 3.5
+#          env: TOXENV=packaging TARGET=source
 # fired only when making release (on tags): MacOSX wheel packages
 # dropping MacOSX support for Windows, to get faster builds https://github.com/pytrip/pytrip/issues/267
 #        - os: osx

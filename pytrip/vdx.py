@@ -251,10 +251,8 @@ class VdxCube:
             if line.startswith("voi"):
                 v = Voi(line.split()[1], self.cube)
                 if self.version == "1.2":
-                    _token = line.split()
-                    if len(_token) == 6:
-                        if _token[5] is not '0':
-                            i = v.read_vdx_old(content, i)
+                    if not line.split()[5] == '0':
+                        i = v.read_vdx_old(content, i)
                 else:
                     i = v.read_vdx(content, i)
                 self.add_voi(v)
