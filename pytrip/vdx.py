@@ -24,6 +24,7 @@ Each Voi holds several Slice, which are normally synced with an associated CT-cu
 Each Slice holds one or more Contours.
 """
 import os
+import re
 import copy
 from math import pi, sqrt
 import logging
@@ -896,10 +897,10 @@ class Voi:
         self.type = int(items[3])
         i += 1
         while i < len(content):
-            line = content[i].strip()
-            if line.startswith("voi"):
+            line = content[i]
+            if re.match("voi", line) is not None:
                 break
-            if line.startswith("slice#"):
+            if re.match("slice#", line) is not None:
                 s = Slice(cube=self.cube)
                 i = s.read_vdx_old(content, i)  # Slices in .vdx files start at 0
                 if self.cube is not None:
@@ -919,7 +920,7 @@ class Voi:
 
                 self.slices.append(s)
 
-            if line.startswith("#TransversalObjects"):
+            if re.match("#TransversalObjects", line) is not None:
                 pass
                 # slices = int(line.split()[1]) # TODO holds information about number of skipped slices
             i += 1
