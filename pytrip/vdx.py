@@ -892,15 +892,18 @@ class Voi:
 
         logger.debug("Reading legacy 1.2 VDX format.")
         line = content[i]
+        logger.debug("Reading line {:s}".format(line))
         items = line.split()
         self.name = items[1]
         self.type = int(items[3])
         i += 1
         while i < len(content):
             line = content[i]
+            logger.debug("In loop reading line {:s}".format(line))
             if re.match("voi", line) is not None:
                 break
             if re.match("slice#", line) is not None:
+                logger.debug("Got slice here {:d}".format(i))
                 s = Slice(cube=self.cube)
                 i = s.read_vdx_old(content, i)  # Slices in .vdx files start at 0
                 if self.cube is not None:
@@ -916,15 +919,18 @@ class Voi:
                             # cont2[2] holds slice number (starting in 1), translate it to absolute position in [mm]
                             cont2[2] = self.cube.slice_to_z(int(cont2[2]))
                 if s.get_position() is None:
+                    logger.error("cannot calculate slice position")
                     raise Exception("cannot calculate slice position")
 
                 self.slices.append(s)
+                logger.info("number of slices {:d}".format(len(self.slices)))
 
             if re.match("#TransversalObjects", line) is not None:
                 pass
                 # slices = int(line.split()[1]) # TODO holds information about number of skipped slices
             i += 1
 
+        logger.info("finally number of slices {:d}".format(len(self.slices)))
         self._sort_slices()
         return i - 1
 
