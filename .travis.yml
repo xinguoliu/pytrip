@@ -26,3 +26,4 @@ install:
 # finally run tox tests
 script:
   - .travis/deploy_package.sh
+  - cat /home/travis/.pypirc
