@@ -18,13 +18,13 @@
     along with PyTRiP98.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#include <Python.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "numpy/arrayobject.h"
-#include "structmember.h"
 #include <math.h>
 #include <string.h>
+#include <Python.h>
+#include "numpy/arrayobject.h"
+#include "structmember.h"
 double _pytriplib_dot(double * a,double *b);
 double _pytriplib_norm(double * vector);
 
@@ -115,7 +115,7 @@ static PyObject * points_to_contour(PyObject *self, PyObject *args)
 
     prev = NULL;
     prev2 = NULL;
-    element2;
+    element2 = NULL;
     point = points[0];
     for(i = 1; i < rows; i++)
     {
@@ -404,7 +404,6 @@ float calculate_path_length(float *** cube,float *** rho_cube,int * dimensions,i
     double element_d;
     int point2[3];
     double point3[3];
-    int b = 0;
 
     element = get_element(cube,dimensions,point);
 
@@ -476,7 +475,6 @@ float calculate_path_length(float *** cube,float *** rho_cube,int * dimensions,i
 static PyObject * rhocube_to_water(PyObject *self, PyObject *args)
 {
     int i,j,k;
-    int base[] = {0,0,0};
     PyArrayObject *vec_rho,*vec_field,*vec_cube_size,*vec_out;
     float *** rho_cube,***cout;
     double *field,*cube_size;
@@ -534,9 +532,6 @@ static PyObject * rhocube_to_water(PyObject *self, PyObject *args)
     }
     for(i = 0; i < 3; i++)
         weight[i] /= w_sum;
-    base[0] = (weight[0] > 0.40)?step[0]:0;
-    base[1] = (weight[1] > 0.40)?step[1]:0;
-    base[2] = (weight[2] > 0.40)?step[2]:0;
     for(i = 0; i < dims[0]; i++)
     {
         for(j= 0; j < dims[1]; j++)
@@ -708,7 +703,6 @@ int lookup_idx_ddd(double ** list,int n,double value)
 static PyObject * calculate_dose(PyObject *self, PyObject *args)
 {
     int i,j,k;
-    int iter_ddd = 1;
     int dims[1];
     int submachines;
     int ddd_steps;
@@ -1367,7 +1361,7 @@ static PyObject * create_field_ramp(PyObject *self, PyObject *args)
     int i,j,k,l,m;
     float extension;
     PyArrayObject *vec_in1,*vec_in2,*vec_out,*vec_field;
-    short * in1,*in2;
+    short * in2;
     short * out;
     double * field;
     int tmp;
@@ -1388,13 +1382,13 @@ static PyObject * create_field_ramp(PyObject *self, PyObject *args)
     cubedim[1] = vec_in1->dimensions[1];
     cubedim[2] = vec_in1->dimensions[2];
 
-    in1 = (short *)vec_in1->data;
     in2 = (short *)vec_in2->data;
 
     vec_out = (PyArrayObject *) PyArray_FromDims(3,cubedim,NPY_INT16);
     out = (short *)vec_out->data;
     a = cubedim[2]*cubedim[1];
-
+    length_a = 0;
+    length_b = 0;
 
     for (i = 0; i < a*cubedim[0]; i++)
     {
