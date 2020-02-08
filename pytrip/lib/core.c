@@ -817,6 +817,10 @@ initpytriplib(void)
     PyObject *module = Py_InitModule("pytriplib", pytriplibMethods);
 #endif
     import_array();
+    printf("module compiled against ABI version 0x%x , version of numpy is 0x%x\n", (int) NPY_VERSION, (int) PyArray_GetNDArrayCVersion());
+    printf("module compiled against API version 0x%x , version of numpy is 0x%x\n", (int) NPY_FEATURE_VERSION, (int) PyArray_GetNDArrayCFeatureVersion());
+
+
     if (module == NULL)
         INITERROR;
 

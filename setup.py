@@ -25,6 +25,7 @@ import subprocess
 
 import numpy as np
 
+print("NPY_VERSION {:x}".format(np.core.multiarray._get_ndarray_c_version()))
 
 def git_version():
     """
