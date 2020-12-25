@@ -213,8 +213,8 @@ class Plan(object):
         out += "|   Bolus thickness             : {:.3f} [mm]\n".format(self.bolus)
         out += "|   H2O offset                  : {:.3f} [mm]\n".format(self.offh2o)
         out += "|   Min particles               : {:d}\n".format(self.minparticles)
-        out += "|   Scanpath                    : '{:s}'\n".format(self.scanpath,
-                                                                   self.scanpaths[self.scanpath])
+        out += "|   Scanpath                    : '{:s} {}'\n".format(self.scanpath,
+                                                                      self.scanpaths[self.scanpath])
         out += "|\n"
         out += "| Optimization target\n"
         out += "|   Relative target dose        : {:.1f} %\n".format(self.target_dose_percent)
@@ -239,9 +239,9 @@ class Plan(object):
         out += "|   Raster scan files           : {:s}\n".format(str(self.want_rst))
         if self.window:
             out += "|   Cube output window\n"
-            out += "|      Xmin / Xmax              : {:.2f}\n".format(self.window[0], self.window[1])
-            out += "|      Ymin / Ymax              : {:.2f}\n".format(self.window[2], self.window[3])
-            out += "|      Zmin / Zmax              : {:.2f}\n".format(self.window[4], self.window[5])
+            out += "|      Xmin / Xmax              : {:.2f} / {:.2f}\n".format(self.window[0], self.window[1])
+            out += "|      Ymin / Ymax              : {:.2f} / {:.2f}\n".format(self.window[2], self.window[3])
+            out += "|      Zmin / Zmax              : {:.2f} / {:.2f}\n".format(self.window[4], self.window[5])
         else:
             out += "|   Cube output window          : (none set)\n"
         return out
@@ -461,6 +461,7 @@ class Plan(object):
             line += " zsteps({:.3f})".format(_field.zsteps)
             line += ' proj({:s})'.format(_field.kernel.projectile.trip98_format())
             output.append(line)
+
         return output
 
     def _make_exec_oars(self):
@@ -534,9 +535,9 @@ class Plan(object):
         window = self.window
         window_str = ""
         if len(window) == 6:
-            window_str = " window({:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f} ".format(window[0], window[1],  # Xmin/max
-                                                                                     window[2], window[3],  # Ymin/max
-                                                                                     window[4], window[5])  # Zmin/max
+            window_str = " window({:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}) ".format(window[0], window[1],  # Xmin/max
+                                                                                      window[2], window[3],  # Ymin/max
+                                                                                      window[4], window[5])  # Zmin/max
 
         self._out_files = []  # list of files generated which will be returned
 
@@ -571,6 +572,16 @@ class Plan(object):
             for i, field in enumerate(fields):
                 output.append('field {:d} / write file({:s}.rst) reverseorder '.format(i + 1, field.basename))
                 self._out_files.append(field.basename + ".rst")
+
+        for _field in fields:
+            if _field.save_bev_file:
+                bev_filename = _field.bev_filename
+                if not bev_filename:
+                    bev_filename = _field.basename + ".bev.gd"
+                line = "field {:d} /bev(*) file({:s})".format(i + 1, bev_filename)
+                output.append(line)
+
+                self._out_files.append(bev_filename)
 
         # TODO: add various .gd files
         return output
